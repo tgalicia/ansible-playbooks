@@ -1,0 +1,10 @@
+#docker install
+---
+        - hosts: webservers:loadbalancers
+          become: true
+          tasks:
+                  - name: yum docker install
+                    yum: name=docker state=present
+                  - name: Start Docker
+                    service: name=docker state=started enabled=yes
+
