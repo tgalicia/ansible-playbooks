@@ -1,0 +1,24 @@
+#kubernetes install
+---
+        - hosts: all
+          become: true
+          tasks:
+                  - name: add repo
+                    yum_repository:
+                            name: kubernetes
+                            description: Kubernetes repo
+                            baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+                            enabled: 1
+                            gpgcheck: 1
+                            gpgkey: https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+                            gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg
+                  - name: Yum install
+                    yum:  
+                        name:
+                                - kubeadm
+                                - kubectl
+                                - kubelet 
+                        state: present 
+                        skip_broken: true
+                  - name: Start Kubelet
+                    service: name=kubelet state=started enabled=yes

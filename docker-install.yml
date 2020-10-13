@@ -1,6 +1,6 @@
 #docker install
 ---
-        - hosts: webservers:loadbalancers
+        - hosts: all
           become: true
           tasks:
                   - name: yum docker install

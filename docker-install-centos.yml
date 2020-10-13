@@ -1,0 +1,18 @@
+#docker install on Centos Control
+---
+        - hosts: control
+          become: true
+          tasks:
+                  - name: Yum add Repo
+                    yum_repository:
+                            name: docker
+                            description: Docker Repo
+                            baseurl: enablerepo = https://download.docker.com/linux/centos/docker-ce.repo
+                            gpgcheck: no
+                  - name: Docker install
+                    yum: 
+                        name:
+                         - docker-ce
+                         - docker-ce-cli
+                         - containerd
+                        state: present             

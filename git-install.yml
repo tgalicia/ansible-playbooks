@@ -5,4 +5,5 @@
           tasks:
                   - name: yum install git
                     yum: name=git state=present
-
+                  - name: Clone git repo
+                    git-clone: name="https://github.com/tgalicia/weather_app"
