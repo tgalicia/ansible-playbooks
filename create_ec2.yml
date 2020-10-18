@@ -1,0 +1,36 @@
+        - hosts: localhost
+          gather_facts: no
+          vars_files: 
+                - /home/ansible/key-iam.yml
+          tasks:
+                - name: Create EC2
+                  ec2:
+                        aws_access_key: "{{AWS_ACCESS_KEY_ID}}"
+                        aws_secret_key: "{{AWS_SECRET_ACCESS_KEY}}"
+                        ec2_region: "{{AWS_REGION}}"
+                        keypair: ansible-key
+                        image: ami-0947d2ba12ee1ff75
+                        instance_type: t2.micro
+                        assign_public_ip: yes
+                        vpc_subnet_id: subnet-3cfcee02
+                        wait: true
+                        exact_count: 2
+                        group_id: sg-0143bb55957993185
+                        count_tag:
+                                Name: webserver2
+                                Name: webserver3
+                        instance_tags:
+                                Name: webserver2
+                                Name: webserver3
+                  register: ec2 
+                - debug: 
+                          var: ec2       
+                - name: Add instances to Hosts
+                  add_host:
+                        host_name: "{{item.public_ip}}"
+                        groupname: Webservers
+                        ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
+                        ansible_ssh_private_key_file: /home/ansible/ansible-key.pem
+                  loop: "{{ec2.instances}}"    
+                                   
+

@@ -1,0 +1,13 @@
+
+        - hosts: localhost
+          gather_facts: no
+          vars_files: 
+                - /home/ansible/key-iam.yml
+          tasks:
+                - name: Start EC2
+                  ec2:
+                        aws_access_key: "{{AWS_ACCESS_KEY_ID}}"
+                        aws_secret_key: "{{AWS_SECRET_ACCESS_KEY}}"
+                        ec2_region: "{{AWS_REGION}}"
+                        state: absent
+                        instance_ids: i-09efba5b7d2e7f074
